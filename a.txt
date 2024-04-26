@@ -1,0 +1,51 @@
+import "./navbar.css";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Ssidebar from "./Ssidebar";
+import Sheader from "./Sheader";
+export default function Supdateplant() {
+  const [product, setProduct] = useState([]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    axios.get('http://localhost:8080/fetchData').then(e => { console.log(e.data); setProduct(e.data) })
+  }, [])
+  return (
+    <>
+      <Ssidebar />
+      <div id="content">
+        <div class="container">
+          <Sheader />
+          <div className="row my-4">
+            <div className="container">
+              <div className="row mt-3 mb-5">
+                {
+                  product.map((val, index) => {
+                    return <div class="col-3">
+                      <div class="card">
+                        <img
+                          class="card-img-top"
+                          src={val.plantimage}
+                          alt="Title"
+                          style={{ height: "16rem", width: "200px" }}
+                        />
+                        <div class="card-body">
+                          {/* <h4 class="card-title">{val.plantname}</h4>
+                          <p class="card-text">RS. {val.plantprice}</p> */}
+                          <input type="text" className="form-control" value={val.plantname} />
+                          <input type="text" className="form-control" value={val.plantprice} />
+                          <button className="btn btn-primary">Update</button>&nbsp;
+                          <button className="btn btn-danger">Delete</button>
+                        </div>
+                      </div>
+                    </div>
+                  })
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
